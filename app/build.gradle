@@ -21,12 +21,12 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/\"")
             buildConfigField("String", "API_KEY", "\"208ca80d1e219453796a7f9792d16776\"")
         }
 
         release {
-            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -37,6 +37,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    viewBinding {
+        enabled = true
     }
 }
 
@@ -77,4 +81,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    //Picasso
+    implementation "com.squareup.picasso:picasso:$picasso_version"
 }

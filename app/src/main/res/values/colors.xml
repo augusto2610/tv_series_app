@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="grey">#FF282828</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="main_background_color">#1b1b1b</color>
+    <color name="main_text_color">#8FFFFFFF</color>
+    <color name="serie_title_text_color">#FFE1F5FF</color>
 </resources>
