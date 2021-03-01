@@ -24,23 +24,20 @@
         android:layout_marginStart="@dimen/normal_margin"
         android:layout_marginBottom="@dimen/normal_margin"
         android:textSize="@dimen/item_title_text_size"
-        tools:text="Wanda Vision"
-        android:textColor="@color/serie_title_text_color" />
+        android:textColor="@color/serie_title_text_color"
+        tools:text="Wanda Vision"/>
 
     <TextView
         android:id="@+id/serieGenreTextView"
+        style="@style/genreTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="@dimen/item_genre_text_size"
-        android:background="@drawable/genre_tv_background"
         android:layout_marginTop="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
         android:paddingStart="@dimen/normal_margin"
         android:paddingEnd="@dimen/normal_margin"
-        android:textStyle="bold"
-        android:textColor="@color/white"
         tools:text="ADVENTURE"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
