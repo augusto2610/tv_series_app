@@ -7,25 +7,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.apinto.tvseriesapp.core.ImageFactoryHelper
 import com.apinto.tvseriesapp.core.Resource.*
-import com.apinto.tvseriesapp.databinding.FragmentSplashBinding
+import com.apinto.tvseriesapp.databinding.FragmentHomeBinding
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import kotlin.Error
 
-class SplashFragment : Fragment() {
+class HomeFragment : Fragment() {
 
-    private val mSplashViewModel: SplashViewModel by inject()
+    private val mHomeViewModel: HomeViewModel by inject()
 
-    private var mBinding: FragmentSplashBinding? = null
+    private var mBinding: FragmentHomeBinding? = null
     private val binding get() = mBinding!!
 
     private lateinit var mAdapter: TvSeriesListAdapter
 
+    private val imageUrlHelper: ImageFactoryHelper by inject()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        mBinding = FragmentSplashBinding.inflate(inflater, container, false)
+        mBinding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
         return binding.root
@@ -37,7 +40,7 @@ class SplashFragment : Fragment() {
     }
 
     private fun initViews() {
-        mAdapter = TvSeriesListAdapter(requireContext())
+        mAdapter = TvSeriesListAdapter(requireContext(), imageUrlHelper)
         val layoutManager = LinearLayoutManager(requireContext())
 
 
@@ -50,11 +53,26 @@ class SplashFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        getGenreList()
+        getConfiguration()
+    }
+
+    private fun getConfiguration() {
+        mHomeViewModel.getConfiguration().observe(this, Observer {
+            when(it) {
+                is Loading -> {}
+                is Success -> {
+                    imageUrlHelper.setImageConfig(it.data)
+                    getGenreList()
+                }
+                is Error -> {
+                    Timber.e("Error ${it.localizedMessage}")
+                }
+            }
+        })
     }
 
     private fun getGenreList() {
-        mSplashViewModel.getGenreList().observe(this, Observer {
+        mHomeViewModel.getGenreList().observe(this, Observer {
             when(it) {
                 is Loading -> {
                     Timber.d("Loading")
@@ -74,7 +92,7 @@ class SplashFragment : Fragment() {
     }
 
     private fun getTvSeriesList() {
-        mSplashViewModel.getTvSeriesList().observe(this, Observer {
+        mHomeViewModel.getTvSeriesList().observe(this, Observer {
             when(it) {
                 is Loading -> {
                     Timber.d("Loading")

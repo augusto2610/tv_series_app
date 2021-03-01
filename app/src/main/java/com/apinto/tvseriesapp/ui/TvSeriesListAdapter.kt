@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.apinto.tvseriesapp.core.BaseViewHolder
+import com.apinto.tvseriesapp.core.ImageFactoryHelper
 import com.apinto.tvseriesapp.databinding.TvSerieItemBinding
 import com.apinto.tvseriesapp.model.Genre
 import com.apinto.tvseriesapp.model.TvSerie
 import com.squareup.picasso.Picasso
 import timber.log.Timber
 
-class TvSeriesListAdapter(private val mContext: Context): RecyclerView.Adapter<BaseViewHolder<*>>() {
+
+class TvSeriesListAdapter(private val mContext: Context, private val imageHelper: ImageFactoryHelper): RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     private val mSeriesList = mutableListOf<TvSerie>()
     private var mGenreList: List<Genre>? = null
@@ -46,7 +48,10 @@ class TvSeriesListAdapter(private val mContext: Context): RecyclerView.Adapter<B
         override fun bind(item: TvSerie) = with(binding) {
             serieTitleTextView.text = item.originalName
 
-            val url = "https://image.tmdb.org/t/p/w500/${item.backdropPath}"
+            //val url = "https://image.tmdb.org/t/p/w500/${item.backdropPath}"
+            val url = "${imageHelper.getDefaultSizeBackdropPath(item.backdropPath)}"
+
+            Timber.d("apinto - $url")
 
             mGenreList?.find {
                 it.id == item.genreIds.firstOrNull()

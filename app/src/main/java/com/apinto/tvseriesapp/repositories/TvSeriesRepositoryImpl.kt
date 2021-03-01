@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers.IO
 
 class TvSeriesRepositoryImpl(private val service: TvSeriesService): TvSeriesRepository {
 
-    override fun getTvSeriesList(page: Int): LiveData<Resource<TvSeriesListResponse>> = liveData(IO){
+    override fun getTvSeriesList(page: Int): LiveData<Resource<TvSeriesListResponse>> = liveData(IO) {
         emit(Loading())
 
         try {
