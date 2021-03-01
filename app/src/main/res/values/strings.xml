@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Tv Series app</string>
+
+    <string name="home_list_title">TODAS</string>
 </resources>

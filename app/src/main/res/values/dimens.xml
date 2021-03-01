@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="normal_margin">16dp</dimen>
+    <dimen name="large_margin">32dp</dimen>
+
+    <!-- Home dimens -->
+    <dimen name="topbar_margin_end">@dimen/normal_margin</dimen>
+    <dimen name="topbar_title_text_size">17sp</dimen>
+
+    <!-- Item list dimens -->
+    <dimen name="item_height">156dp</dimen>
+    <dimen name="item_title_text_size">24sp</dimen>
+    <dimen name="item_genre_text_size">12sp</dimen>
+
+</resources>
