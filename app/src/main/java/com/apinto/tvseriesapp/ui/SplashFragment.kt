@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.apinto.tvseriesapp.R
-import com.apinto.tvseriesapp.core.Resource
+import com.apinto.tvseriesapp.core.Resource.*
 import com.apinto.tvseriesapp.databinding.FragmentSplashBinding
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import kotlin.Error
 
 class SplashFragment : Fragment() {
 
@@ -51,17 +50,41 @@ class SplashFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        mSplashViewModel.getTvSeriesList().observe(this, Observer {
+        getGenreList()
+    }
+
+    private fun getGenreList() {
+        mSplashViewModel.getGenreList().observe(this, Observer {
             when(it) {
-                is Resource.Loading -> {
+                is Loading -> {
                     Timber.d("Loading")
                 }
 
-                is Resource.Error -> {
+                is Success -> {
+                    Timber.d("genres: ${it.data.genres}")
+                    mAdapter.setGenreList(it.data.genres)
+                    getTvSeriesList()
+                }
+
+                is Error -> {
+                    Timber.e("Error ${it.localizedMessage}")
+                }
+            }
+        })
+    }
+
+    private fun getTvSeriesList() {
+        mSplashViewModel.getTvSeriesList().observe(this, Observer {
+            when(it) {
+                is Loading -> {
+                    Timber.d("Loading")
+                }
+
+                is Error -> {
                     Timber.d("Error getting tv series")
                 }
 
-                is Resource.Success -> {
+                is Success -> {
                     mAdapter.updateList(it.data.results)
                 }
             }

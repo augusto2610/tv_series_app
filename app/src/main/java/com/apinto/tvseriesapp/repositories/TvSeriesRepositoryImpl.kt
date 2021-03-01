@@ -2,24 +2,39 @@ package com.apinto.tvseriesapp.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.apinto.tvseriesapp.BuildConfig
+import com.apinto.tvseriesapp.BuildConfig.API_KEY
 import com.apinto.tvseriesapp.core.Resource
+import com.apinto.tvseriesapp.core.Resource.Error
+import com.apinto.tvseriesapp.core.Resource.Loading
+import com.apinto.tvseriesapp.core.Resource.Success
+import com.apinto.tvseriesapp.model.GenreListResponse
 import com.apinto.tvseriesapp.model.TvSeriesListResponse
 import com.apinto.tvseriesapp.services.TvSeriesService
 import kotlinx.coroutines.Dispatchers.IO
 
 class TvSeriesRepositoryImpl(private val service: TvSeriesService): TvSeriesRepository {
 
-    override fun getTvSeriesList(apiKey: String, page: Int): LiveData<Resource<TvSeriesListResponse>> = liveData(IO){
-        emit(Resource.Loading())
+    override fun getTvSeriesList(page: Int): LiveData<Resource<TvSeriesListResponse>> = liveData(IO){
+        emit(Loading())
 
         try {
-            val response = service.getTvSeries(BuildConfig.API_KEY, 1)
-            emit(Resource.Success(response))
+            val response = service.getTvSeries(API_KEY, page)
+            emit(Success(response))
         } catch (exception: Exception) {
-            emit(Resource.Error(exception))
+            emit(Error(exception))
         }
 
+    }
+
+    override fun getGenreList(): LiveData<Resource<GenreListResponse>> = liveData(IO) {
+        emit(Loading())
+
+        try {
+            val response = service.getGenreList(API_KEY)
+            emit(Success(response))
+        } catch (exception: Exception) {
+            emit(Error(exception))
+        }
     }
 
 }
