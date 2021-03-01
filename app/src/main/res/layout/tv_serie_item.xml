@@ -9,8 +9,9 @@
     android:layout_marginBottom="@dimen/normal_margin"
     android:layout_height="@dimen/item_height">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/seriePosterImageView"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>

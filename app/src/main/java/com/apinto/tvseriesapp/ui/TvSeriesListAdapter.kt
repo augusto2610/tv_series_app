@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.apinto.tvseriesapp.R
 import com.apinto.tvseriesapp.core.BaseViewHolder
 import com.apinto.tvseriesapp.core.ImageFactoryHelper
 import com.apinto.tvseriesapp.databinding.TvSerieItemBinding
 import com.apinto.tvseriesapp.model.Genre
 import com.apinto.tvseriesapp.model.TvSerie
 import com.squareup.picasso.Picasso
-import timber.log.Timber
 
 
 class TvSeriesListAdapter(private val mContext: Context, private val imageHelper: ImageFactoryHelper): RecyclerView.Adapter<BaseViewHolder<*>>() {
@@ -48,16 +48,15 @@ class TvSeriesListAdapter(private val mContext: Context, private val imageHelper
         override fun bind(item: TvSerie) = with(binding) {
             serieTitleTextView.text = item.originalName
 
-            //val url = "https://image.tmdb.org/t/p/w500/${item.backdropPath}"
             val url = "${imageHelper.getDefaultSizeBackdropPath(item.backdropPath)}"
-
-            Timber.d("apinto - $url")
 
             mGenreList?.find {
                 it.id == item.genreIds.firstOrNull()
             }?.let {
                 serieGenreTextView.text = it.name.toUpperCase()
             }
+
+            binding.seriePosterImageView.setColorFilter(mContext.getColor(R.color.test_color))
 
             Picasso.get().load(url).into(binding.seriePosterImageView)
         }
