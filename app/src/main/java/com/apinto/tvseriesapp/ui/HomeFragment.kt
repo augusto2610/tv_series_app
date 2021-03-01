@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.apinto.tvseriesapp.R
 import com.apinto.tvseriesapp.core.ImageFactoryHelper
 import com.apinto.tvseriesapp.core.Resource.*
 import com.apinto.tvseriesapp.databinding.FragmentHomeBinding
+import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 import timber.log.Timber
-import kotlin.Error
 
 class HomeFragment : Fragment() {
 
@@ -58,13 +59,16 @@ class HomeFragment : Fragment() {
     private fun getConfiguration() {
         mHomeViewModel.getConfiguration().observe(this, Observer {
             when(it) {
-                is Loading -> {}
+                is Loading -> {
+                    showLoading()
+                }
                 is Success -> {
                     imageUrlHelper.setImageConfig(it.data)
                     getGenreList()
                 }
                 is Error -> {
-                    Timber.e("Error ${it.localizedMessage}")
+                    Timber.e("Error ${it.exception.localizedMessage}")
+                    showErrorMessage()
                 }
             }
         })
@@ -73,9 +77,6 @@ class HomeFragment : Fragment() {
     private fun getGenreList() {
         mHomeViewModel.getGenreList().observe(this, Observer {
             when(it) {
-                is Loading -> {
-                    Timber.d("Loading")
-                }
 
                 is Success -> {
                     Timber.d("genres: ${it.data.genres}")
@@ -84,7 +85,8 @@ class HomeFragment : Fragment() {
                 }
 
                 is Error -> {
-                    Timber.e("Error ${it.localizedMessage}")
+                    Timber.e("Error ${it.exception.localizedMessage}")
+                    showErrorMessage()
                 }
             }
         })
@@ -93,18 +95,39 @@ class HomeFragment : Fragment() {
     private fun getTvSeriesList() {
         mHomeViewModel.getTvSeriesList().observe(this, Observer {
             when(it) {
-                is Loading -> {
-                    Timber.d("Loading")
-                }
 
                 is Error -> {
-                    Timber.d("Error getting tv series")
+                    Timber.d("Error ${it.exception.localizedMessage}")
+                    showErrorMessage()
                 }
 
                 is Success -> {
+                    showLoading(false)
+
                     mAdapter.updateList(it.data.results)
                 }
             }
         })
     }
+
+    private fun showLoading(show: Boolean = true) {
+        binding.errorMessageTextView.visibility = View.GONE
+
+        if (show) {
+            binding.loadingProgressBar.visibility = View.VISIBLE
+            binding.contentGroup.visibility = View.GONE
+        } else {
+            binding.loadingProgressBar.visibility = View.GONE
+            binding.contentGroup.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showErrorMessage(message: String = requireContext().getString(R.string.generic_error_message)) {
+        binding.contentGroup.visibility = View.GONE
+        binding.loadingProgressBar.visibility = View.GONE
+
+        binding.errorMessageTextView.visibility = View.VISIBLE
+        binding.errorMessageTextView.text = message
+    }
+
 }
