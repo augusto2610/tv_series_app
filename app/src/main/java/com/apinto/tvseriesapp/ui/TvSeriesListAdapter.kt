@@ -3,6 +3,7 @@ package com.apinto.tvseriesapp.ui
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil.DiffResult.NO_POSITION
 import androidx.recyclerview.widget.RecyclerView
 import com.apinto.tvseriesapp.R
 import com.apinto.tvseriesapp.core.BaseViewHolder
@@ -14,6 +15,12 @@ import com.squareup.picasso.Picasso
 
 
 class TvSeriesListAdapter(private val mContext: Context, private val imageHelper: ImageFactoryHelper): RecyclerView.Adapter<BaseViewHolder<*>>() {
+
+    interface OnTvSerieClickListener {
+        fun onTvSerieClick(serieId: Long)
+    }
+
+    private var mClickListener: OnTvSerieClickListener? = null
 
     private val mSeriesList = mutableListOf<TvSerie>()
     private var mGenreList: List<Genre>? = null
@@ -27,10 +34,21 @@ class TvSeriesListAdapter(private val mContext: Context, private val imageHelper
         mGenreList = list
     }
 
+    fun setOnClickListener(listener: OnTvSerieClickListener) {
+        mClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding = TvSerieItemBinding.inflate(LayoutInflater.from(mContext), parent, false)
 
-        return ViewHolder(itemBinding)
+        val holder = ViewHolder(itemBinding)
+
+        itemBinding.root.setOnClickListener {
+            val position = holder.adapterPosition.takeIf { it != NO_POSITION } ?: return@setOnClickListener
+            mClickListener?.onTvSerieClick(mSeriesList[position].id)
+        }
+
+        return holder
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
@@ -55,8 +73,6 @@ class TvSeriesListAdapter(private val mContext: Context, private val imageHelper
             }?.let {
                 serieGenreTextView.text = it.name.toUpperCase()
             }
-
-            binding.seriePosterImageView.setColorFilter(mContext.getColor(R.color.test_color))
 
             Picasso.get().load(url).into(binding.seriePosterImageView)
         }

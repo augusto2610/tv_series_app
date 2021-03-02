@@ -5,8 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.apinto.tvseriesapp.DetailFragment
 import com.apinto.tvseriesapp.R
 import com.apinto.tvseriesapp.core.ImageFactoryHelper
 import com.apinto.tvseriesapp.core.Resource.*
@@ -37,10 +41,23 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+
+        getConfiguration()
     }
 
     private fun initViews() {
         mAdapter = TvSeriesListAdapter(requireContext(), imageUrlHelper)
+        mAdapter.setOnClickListener(object: TvSeriesListAdapter.OnTvSerieClickListener {
+            override fun onTvSerieClick(serieId: Long) {
+
+                mHomeViewModel.shouldLoadAgain = false
+
+                val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment()
+                action.serieId = serieId
+                findNavController().navigate(action)
+            }
+        })
+
         val layoutManager = LinearLayoutManager(requireContext())
 
 
@@ -49,13 +66,6 @@ class HomeFragment : Fragment() {
         binding.tvSeriesRecyclerView.adapter = mAdapter
 
     }
-
-    override fun onResume() {
-        super.onResume()
-
-        getConfiguration()
-    }
-
     private fun getConfiguration() {
         mHomeViewModel.getConfiguration().observe(this, Observer {
             when(it) {

@@ -21,9 +21,10 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="roundedImageView">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">3dp</item>
+    <style name="tvSerieBackdropStyle">
+        <item name="saturation">0</item>
+        <item name="warmth">1</item>
+        <item name="round">3dp</item>
     </style>
 
 </resources>
