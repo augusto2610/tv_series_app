@@ -10,14 +10,16 @@
     app:layoutDescription="@xml/poster_scene"
     app:layout_scrollFlags="scroll|enterAlways|snap|exitUntilCollapsed">
 
-    <ImageView
+    <androidx.constraintlayout.utils.widget.ImageFilterView
         android:id="@+id/posterImage"
         android:layout_width="@dimen/poster_max_width"
         android:layout_height="@dimen/poster_max_height"
+        android:layout_marginTop="@dimen/large_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/large_margin"/>
+        app:round="6dp"
+        app:elevation="2dp"/>
 
 
 </com.apinto.tvseriesapp.core.CollapsibleToolbar>

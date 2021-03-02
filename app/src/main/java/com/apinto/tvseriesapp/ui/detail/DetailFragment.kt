@@ -32,6 +32,10 @@ class DetailFragment : Fragment() {
     private var mBinding: FragmentDetailBinding? = null
     private val binding get() = mBinding!!
 
+    private var backgroundColor: Int = 0
+    private var textColor: Int = 0
+    private var isSuscripted = false
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = FragmentDetailBinding.inflate(inflater, container, false)
@@ -56,6 +60,23 @@ class DetailFragment : Fragment() {
         binding.backButton.setOnClickListener {
             requireActivity().onBackPressed()
         }
+
+        binding.subscriptionButton.setOnClickListener {
+            isSuscripted = !isSuscripted
+            checkSubscriptionButtonState()
+        }
+    }
+
+    private fun checkSubscriptionButtonState() {
+        if (isSuscripted) {
+            binding.subscriptionButton.background = resources.getDrawable(R.drawable.subscribe_button_selected, null)
+            binding.subscriptionButton.setTextColor(backgroundColor)
+            binding.subscriptionButton.text = getString(R.string.subscripted_text)
+        } else {
+            binding.subscriptionButton.background = resources.getDrawable(R.drawable.subscribe_button_unselected, null)
+            binding.subscriptionButton.setTextColor(textColor)
+            binding.subscriptionButton.text = getString(R.string.no_subscript_text)
+        }
     }
 
     private fun getDetails(serieId: Long) {
@@ -63,7 +84,6 @@ class DetailFragment : Fragment() {
             when(it) {
                 is Success -> {
                     fillDetails(it.data)
-                    stopLoading()
                 }
 
                 is Error -> {
@@ -81,7 +101,7 @@ class DetailFragment : Fragment() {
 
         binding.descriptionTextView.text = details.overview
 
-        val url = mImageHelper.getBiggerSizePosterPath(details.posterPath)
+        val url = mImageHelper.getDefaultSizePosterPath(details.posterPath)
 
         //Added resize values in order to avoid onBitmapLoaded method never called
         Picasso.get().load(url).resize(182, 273).into(object: Target {
@@ -91,32 +111,37 @@ class DetailFragment : Fragment() {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                 binding.appBar.posterImage.setImageBitmap(bitmap)
 
-                Palette.from(bitmap!!).generate {palette ->
+                handleBackgroundColor(bitmap)
 
-                    palette?.let {
-
-                        it.mutedSwatch?.let { mutedSwatch ->
-                            binding.subscriptionButton.setBackgroundColor(mutedSwatch.rgb)
-                        } ?: it.vibrantSwatch?.let {vibrantSwatch ->
-                            binding.subscriptionButton.setBackgroundColor(vibrantSwatch.rgb)
-                        }
-
-                        it.lightMutedSwatch?.let { lightMutedSwatch ->
-                            binding.subscriptionButton.setTextColor(lightMutedSwatch.rgb)
-                        } ?: it.lightVibrantSwatch?.let { lightVibrantSwatch ->
-                            binding.subscriptionButton.setTextColor(lightVibrantSwatch.rgb)
-                        }
-
-                    }
-
-
-                }
             }
 
             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
             }
         })
 
+    }
+
+    private fun handleBackgroundColor(bitmap: Bitmap?) {
+        Palette.from(bitmap!!).generate {palette ->
+
+            palette?.let {
+                backgroundColor = it.mutedSwatch?.rgb
+                    ?: it.vibrantSwatch?.rgb ?: requireContext().getColor(R.color.white)
+
+                binding.screenBackground.setImageBitmap(bitmap)
+                binding.colorMask.setBackgroundColor(backgroundColor)
+
+                textColor = it.lightMutedSwatch?.rgb
+                    ?: it.lightVibrantSwatch?.rgb ?: requireContext().getColor(R.color.black)
+
+                binding.serieTitleTextView.setTextColor(textColor)
+                binding.serieLaunchYearTextView.setTextColor(textColor)
+                binding.descriptionTextView.setTextColor(textColor)
+
+                checkSubscriptionButtonState()
+                stopLoading()
+            }
+        }
     }
 
     private fun stopLoading() {

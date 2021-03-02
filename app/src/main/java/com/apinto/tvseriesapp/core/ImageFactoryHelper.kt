@@ -18,9 +18,17 @@ class ImageFactoryHelper {
         return "${imageConfiguration?.secureBaseUrl}$size$imagePath"
     }
 
-    fun getBiggerSizePosterPath(imagePath: String): String? {
+    fun getDefaultSizePosterPath(imagePath: String): String? {
         val size = (imageConfiguration?.posterSizes?.let {
             (it.find {size -> size == "w500" }) ?: it[0]
+        })
+
+        return "${imageConfiguration?.secureBaseUrl}$size$imagePath"
+    }
+
+    fun getOriginalSizePath(imagePath: String): String? {
+        val size = (imageConfiguration?.posterSizes?.let {
+            it.last()
         })
 
         return "${imageConfiguration?.secureBaseUrl}$size$imagePath"
