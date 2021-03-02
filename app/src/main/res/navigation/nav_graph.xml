@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.apinto.tvseriesapp.ui.HomeFragment"
+        android:name="com.apinto.tvseriesapp.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.apinto.tvseriesapp.DetailFragment"
+        android:name="com.apinto.tvseriesapp.ui.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail">
 

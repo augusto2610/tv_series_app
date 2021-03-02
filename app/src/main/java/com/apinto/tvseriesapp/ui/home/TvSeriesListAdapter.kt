@@ -1,11 +1,10 @@
-package com.apinto.tvseriesapp.ui
+package com.apinto.tvseriesapp.ui.home
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil.DiffResult.NO_POSITION
 import androidx.recyclerview.widget.RecyclerView
-import com.apinto.tvseriesapp.R
 import com.apinto.tvseriesapp.core.BaseViewHolder
 import com.apinto.tvseriesapp.core.ImageFactoryHelper
 import com.apinto.tvseriesapp.databinding.TvSerieItemBinding

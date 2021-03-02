@@ -16,4 +16,17 @@
 
     <dimen name="error_message_text_size">18sp</dimen>
 
+    <!-- Details screen dimens -->
+    <dimen name="back_button_size">48dp</dimen>
+    <dimen name="app_bar_expanded_height">337dp</dimen>
+    <dimen name="app_bar_min_height">121dp</dimen>
+    <dimen name="serie_title_text_size">24sp</dimen>
+    <dimen name="serie_launch_year_text_size">16sp</dimen>
+    <dimen name="overview_title_text_size">14sp</dimen>
+    <dimen name="overview_text_size_line_spacing">14sp</dimen>
+    <dimen name="poster_max_width">182dp</dimen>
+    <dimen name="poster_max_height">273dp</dimen>
+    <dimen name="poster_min_width">40dp</dimen>
+    <dimen name="poster_min_height">60dp</dimen>
+
 </resources>

@@ -1,21 +1,18 @@
-package com.apinto.tvseriesapp.ui
+package com.apinto.tvseriesapp.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.apinto.tvseriesapp.DetailFragment
 import com.apinto.tvseriesapp.R
 import com.apinto.tvseriesapp.core.ImageFactoryHelper
 import com.apinto.tvseriesapp.core.Resource.*
 import com.apinto.tvseriesapp.databinding.FragmentHomeBinding
-import org.koin.android.ext.android.bind
+import com.apinto.tvseriesapp.ui.home.HomeFragmentDirections
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
@@ -46,13 +43,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViews() {
-        mAdapter = TvSeriesListAdapter(requireContext(), imageUrlHelper)
-        mAdapter.setOnClickListener(object: TvSeriesListAdapter.OnTvSerieClickListener {
+        mAdapter = TvSeriesListAdapter(
+            requireContext(),
+            imageUrlHelper
+        )
+        mAdapter.setOnClickListener(object:
+            TvSeriesListAdapter.OnTvSerieClickListener {
             override fun onTvSerieClick(serieId: Long) {
 
                 mHomeViewModel.shouldLoadAgain = false
 
-                val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment()
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToDetailFragment()
                 action.serieId = serieId
                 findNavController().navigate(action)
             }
@@ -67,7 +69,7 @@ class HomeFragment : Fragment() {
 
     }
     private fun getConfiguration() {
-        mHomeViewModel.getConfiguration().observe(this, Observer {
+        mHomeViewModel.getConfiguration().observe(viewLifecycleOwner, Observer {
             when(it) {
                 is Loading -> {
                     showLoading()
@@ -85,7 +87,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getGenreList() {
-        mHomeViewModel.getGenreList().observe(this, Observer {
+        mHomeViewModel.getGenreList().observe(viewLifecycleOwner, Observer {
             when(it) {
 
                 is Success -> {
@@ -103,7 +105,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getTvSeriesList() {
-        mHomeViewModel.getTvSeriesList().observe(this, Observer {
+        mHomeViewModel.getTvSeriesList().observe(viewLifecycleOwner, Observer {
             when(it) {
 
                 is Error -> {

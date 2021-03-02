@@ -14,4 +14,6 @@
     <color name="serie_title_text_color">#FFE1F5FF</color>
 
     <color name="test_color">#B31E2B31</color>
+
+    <color name="transparent_color">#00FFFFFF</color>
 </resources>

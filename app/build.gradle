@@ -72,11 +72,14 @@ dependencies {
 
     //Koin
     implementation "org.koin:koin-android:$koin_version"
-    // or Koin for Lifecycle scoping
+
+    //Koin for Lifecycle scoping
     implementation "org.koin:koin-androidx-scope:$koin_version"
-    // or Koin for Android Architecture ViewModel
+
+    //Koin for Android Architecture ViewModel
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-    // or Koin for Android Fragment Factory (unstable version)
+
+    //Koin for Android Fragment Factory (unstable version)
     implementation "org.koin:koin-androidx-fragment:$koin_version"
 
     //ViewModel
@@ -86,4 +89,7 @@ dependencies {
 
     //Picasso
     implementation "com.squareup.picasso:picasso:$picasso_version"
+
+    //Palette
+    implementation "androidx.palette:palette-ktx:$palette_version"
 }

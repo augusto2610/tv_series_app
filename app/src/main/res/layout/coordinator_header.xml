@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.apinto.tvseriesapp.core.CollapsibleToolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/motionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:minHeight="@dimen/app_bar_min_height"
+    app:layoutDescription="@xml/poster_scene"
+    app:layout_scrollFlags="scroll|enterAlways|snap|exitUntilCollapsed">
+
+    <ImageView
+        android:id="@+id/posterImage"
+        android:layout_width="@dimen/poster_max_width"
+        android:layout_height="@dimen/poster_max_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/large_margin"/>
+
+
+</com.apinto.tvseriesapp.core.CollapsibleToolbar>

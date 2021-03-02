@@ -8,6 +8,7 @@ buildscript {
     ext.koin_version = "2.2.2"
     ext.lifecycle_version = "2.3.0"
     ext.picasso_version = "2.71828"
+    ext.palette_version = "1.0.0"
 
     repositories {
         google()

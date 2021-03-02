@@ -1,4 +1,4 @@
-package com.apinto.tvseriesapp.ui
+package com.apinto.tvseriesapp.ui.home
 
 import androidx.lifecycle.ViewModel
 import com.apinto.tvseriesapp.repositories.ImageFactoryRepository

@@ -1,44 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".DetailFragment">
-
-    <ScrollView
-        android:id="@+id/scrollView"
+    tools:context=".ui.detail.DetailFragment">
+    
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_expanded_height"
+        android:background="@color/transparent_color"
+        app:elevation="0dp"
+        android:visibility="invisible">
+
+        <include layout="@layout/coordinator_header"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="@dimen/back_button_size"
+        android:layout_height="@dimen/back_button_size"
+        android:background="@drawable/circle"
+        android:src="@drawable/ic_back_button"
+        android:padding="@dimen/small_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/large_margin"/>
+
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/errorMessageTextView"
+        style="@style/errorMessageStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginHorizontal="@dimen/normal_margin"
+        tools:text="Error al cargar"
+        android:visibility="invisible"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/posterImageView"
-                android:layout_width="182dp"
-                android:layout_height="273dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="@dimen/large_margin"
-                android:src="@color/black"/>
-
             <TextView
                 android:id="@+id/serieTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/posterImageView"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:textSize="24sp"
+                android:textSize="@dimen/serie_title_text_size"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/large_margin"
-                android:text="Breaking Bad"/>
+                tools:text="Breaking Bad"/>
 
             <TextView
                 android:id="@+id/serieLaunchYearTextView"
@@ -48,8 +81,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/small_margin"
-                android:textSize="16sp"
-                android:text="2011"/>
+                android:textSize="@dimen/serie_launch_year_text_size"
+                tools:text="2011"/>
 
             <Button
                 android:id="@+id/subscriptionButton"
@@ -59,7 +92,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/large_margin"
-                android:text="Suscribirme"/>
+                android:text="@string/no_subscript_text"/>
 
             <TextView
                 android:id="@+id/overViewTitle"
@@ -70,9 +103,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/subscriptionButton"
                 android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginHorizontal="@dimen/large_margin"
-                android:textSize="14sp"
+                android:textSize="@dimen/overview_title_text_size"
                 android:textStyle="bold"
-                android:text="Overview"/>
+                android:text="@string/overview_title"/>
 
             <TextView
                 android:id="@+id/descriptionTextView"
@@ -83,13 +116,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginHorizontal="@dimen/large_margin"
-                android:textSize="14sp"
-                android:lineSpacingExtra="14sp"
-                android:text="@string/overview_description_example_text"/>
+                android:textSize="@dimen/overview_title_text_size"
+                android:lineSpacingExtra="@dimen/overview_text_size_line_spacing"
+                tools:text="@string/overview_description_example_text"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
