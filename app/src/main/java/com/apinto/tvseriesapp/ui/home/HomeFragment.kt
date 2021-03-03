@@ -19,17 +19,17 @@ import com.apinto.tvseriesapp.databinding.FragmentHomeBinding
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
+const val FIRST_PAGE_INDEX = 1
 class HomeFragment : Fragment() {
 
     private val mHomeViewModel: HomeViewModel by inject()
+    private val mImageUrlHelper: ImageFactoryHelper by inject()
 
     private var mBinding: FragmentHomeBinding? = null
     private val binding get() = mBinding!!
 
     private lateinit var mAdapter: TvSeriesListAdapter
     private lateinit var mSubscribedAdapter: SubscriptionsListAdapter
-
-    private val mImageUrlHelper: ImageFactoryHelper by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -47,18 +47,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViews() {
-        mAdapter = TvSeriesListAdapter(
-            requireContext(),
-            mImageUrlHelper
-        )
+        setupTvSerieList()
+        setupSubscribedList()
+    }
+
+    private fun setupTvSerieList() {
+        mAdapter = TvSeriesListAdapter(requireContext(), mImageUrlHelper)
         mAdapter.setOnClickListener(object: TvSeriesListAdapter.OnTvSerieClickListener {
             override fun onTvSerieClick(serieId: Long) {
-                mHomeViewModel.shouldLoadAgain = false
-
-                val action =
-                    HomeFragmentDirections.actionHomeFragmentToDetailFragment()
-                action.serieId = serieId
-                findNavController().navigate(action)
+                navigateToDetails(serieId)
             }
         })
 
@@ -67,18 +64,28 @@ class HomeFragment : Fragment() {
         layoutManager.orientation = VERTICAL
         binding.tvSeriesRecyclerView.layoutManager = layoutManager
         binding.tvSeriesRecyclerView.adapter = mAdapter
-
-        initSubscribedList()
     }
 
-    private fun initSubscribedList() {
+    private fun setupSubscribedList() {
         mSubscribedAdapter = SubscriptionsListAdapter(requireContext(), mImageUrlHelper)
+        mSubscribedAdapter.setOnClickListener(object: SubscriptionsListAdapter.OnSubscribedClickListener {
+            override fun onClicked(serieId: Long) {
+                navigateToDetails(serieId)
+            }
+        })
 
         val layoutManager = LinearLayoutManager(requireContext())
         layoutManager.orientation = HORIZONTAL
 
         binding.subscriptionsRecyclerView.layoutManager = layoutManager
         binding.subscriptionsRecyclerView.adapter = mSubscribedAdapter
+    }
+
+    private fun navigateToDetails(serieId: Long) {
+        val action =
+            HomeFragmentDirections.actionHomeFragmentToDetailFragment()
+        action.serieId = serieId
+        findNavController().navigate(action)
     }
 
     private fun getConfiguration() {
@@ -104,7 +111,6 @@ class HomeFragment : Fragment() {
             when(it) {
 
                 is Success -> {
-                    Timber.d("genres: ${it.data.genres}")
                     mAdapter.setGenreList(it.data.genres)
                     getTvSeriesList()
                     getSubscriptions()
@@ -119,11 +125,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun getTvSeriesList() {
-        mHomeViewModel.getTvSeriesList().observe(viewLifecycleOwner, Observer {
+        mHomeViewModel.getTvSeriesList(FIRST_PAGE_INDEX).observe(viewLifecycleOwner, Observer {
             when(it) {
 
                 is Error -> {
-                    Timber.d("Error ${it.exception.localizedMessage}")
+                    Timber.e("Error ${it.exception.localizedMessage}")
                     showErrorMessage()
                 }
 
@@ -139,7 +145,6 @@ class HomeFragment : Fragment() {
         mHomeViewModel.getSubscriptions().observe(viewLifecycleOwner, Observer {
             when(it) {
                 is Success -> {
-                    Timber.d("apinto - Subscriptions: ${it.data.size}")
                     mSubscribedAdapter.updateList(it.data)
 
                     if (it.data.isNotEmpty()) {
@@ -151,7 +156,7 @@ class HomeFragment : Fragment() {
                 }
 
                 is Error -> {
-                    Timber.d("apinto - error: ${it.exception.localizedMessage}")
+                    Timber.e("Error: ${it.exception.localizedMessage}")
                 }
             }
         })

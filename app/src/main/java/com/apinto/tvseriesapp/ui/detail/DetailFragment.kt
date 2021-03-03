@@ -93,7 +93,7 @@ class DetailFragment : Fragment() {
 
                 is Error -> {
                     showErrorMessage()
-                    Timber.d("Error: ${it.exception.localizedMessage}")
+                    Timber.e("Error: ${it.exception.localizedMessage}")
                 }
             }
         })

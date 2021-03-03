@@ -6,11 +6,10 @@ import com.apinto.tvseriesapp.repositories.ImageFactoryRepository
 import com.apinto.tvseriesapp.repositories.TvSeriesRepository
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repo: TvSeriesRepository, private val imageFactory: ImageFactoryRepository): ViewModel() {
+class HomeViewModel(private val repo: TvSeriesRepository,
+                    private val imageFactory: ImageFactoryRepository): ViewModel() {
 
-    var shouldLoadAgain = true
-
-    fun getTvSeriesList() = repo.getTvSeriesList(1)
+    fun getTvSeriesList(page: Int) = repo.getTvSeriesList(page)
 
     fun getGenreList() = repo.getGenreList()
 

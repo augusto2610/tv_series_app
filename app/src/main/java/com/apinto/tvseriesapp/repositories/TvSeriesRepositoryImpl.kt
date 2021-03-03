@@ -14,7 +14,8 @@ import com.apinto.tvseriesapp.services.SubscriptionService
 import com.apinto.tvseriesapp.services.TvSeriesService
 import kotlinx.coroutines.Dispatchers.IO
 
-class TvSeriesRepositoryImpl(private val service: TvSeriesService, private val subscriptionService: SubscriptionService): TvSeriesRepository {
+class TvSeriesRepositoryImpl(private val service: TvSeriesService,
+                             private val subscriptionService: SubscriptionService): TvSeriesRepository {
 
     override fun getTvSeriesList(page: Int): LiveData<Resource<TvSeriesListResponse>> = liveData(IO) {
         emit(Loading())

@@ -2,6 +2,11 @@ package com.apinto.tvseriesapp.core
 
 import com.apinto.tvseriesapp.model.ImageConfiguration
 
+/**
+ * This class is a helper that build the right url based on the size.
+ * The components of the URL are retrieved for /configuration endpoint so this helper creates
+ * the url with the right components.
+ */
 class ImageFactoryHelper {
 
     private var imageConfiguration: ImageConfiguration? = null

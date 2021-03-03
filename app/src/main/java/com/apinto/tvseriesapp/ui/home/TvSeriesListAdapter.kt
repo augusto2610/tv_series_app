@@ -66,7 +66,7 @@ class TvSeriesListAdapter(private val mContext: Context,
         override fun bind(item: TvSerie) = with(binding) {
             serieTitleTextView.text = item.originalName
 
-            val url = "${mImageHelper.getDefaultSizeBackdropPath(item.backdropPath)}"
+            val url = mImageHelper.getDefaultSizeBackdropPath(item.backdropPath)
 
             mGenreList?.find {
                 it.id == item.genreIds.firstOrNull()

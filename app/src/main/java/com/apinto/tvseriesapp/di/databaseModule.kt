@@ -7,7 +7,7 @@ import org.koin.dsl.module
 
 val databaseModule = module {
     single {
-        Room.databaseBuilder(androidApplication(), AppDatabase::class.java, "test_name").build()
+        Room.databaseBuilder(androidApplication(), AppDatabase::class.java, "subscriptionsDb").build()
     }
     single { get<AppDatabase>().tvSerieDao() }
 }

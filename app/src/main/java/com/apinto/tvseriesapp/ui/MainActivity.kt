@@ -2,7 +2,6 @@ package com.apinto.tvseriesapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.navigation.findNavController
 import com.apinto.tvseriesapp.R
 
