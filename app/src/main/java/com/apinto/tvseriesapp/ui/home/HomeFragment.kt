@@ -4,10 +4,14 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.apinto.tvseriesapp.R
 import com.apinto.tvseriesapp.core.ImageFactoryHelper
 import com.apinto.tvseriesapp.core.Resource.*
@@ -23,8 +27,9 @@ class HomeFragment : Fragment() {
     private val binding get() = mBinding!!
 
     private lateinit var mAdapter: TvSeriesListAdapter
+    private lateinit var mSubscribedAdapter: SubscriptionsListAdapter
 
-    private val imageUrlHelper: ImageFactoryHelper by inject()
+    private val mImageUrlHelper: ImageFactoryHelper by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,12 +49,10 @@ class HomeFragment : Fragment() {
     private fun initViews() {
         mAdapter = TvSeriesListAdapter(
             requireContext(),
-            imageUrlHelper
+            mImageUrlHelper
         )
-        mAdapter.setOnClickListener(object:
-            TvSeriesListAdapter.OnTvSerieClickListener {
+        mAdapter.setOnClickListener(object: TvSeriesListAdapter.OnTvSerieClickListener {
             override fun onTvSerieClick(serieId: Long) {
-
                 mHomeViewModel.shouldLoadAgain = false
 
                 val action =
@@ -61,12 +64,23 @@ class HomeFragment : Fragment() {
 
         val layoutManager = LinearLayoutManager(requireContext())
 
-
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        layoutManager.orientation = VERTICAL
         binding.tvSeriesRecyclerView.layoutManager = layoutManager
         binding.tvSeriesRecyclerView.adapter = mAdapter
 
+        initSubscribedList()
     }
+
+    private fun initSubscribedList() {
+        mSubscribedAdapter = SubscriptionsListAdapter(requireContext(), mImageUrlHelper)
+
+        val layoutManager = LinearLayoutManager(requireContext())
+        layoutManager.orientation = HORIZONTAL
+
+        binding.subscriptionsRecyclerView.layoutManager = layoutManager
+        binding.subscriptionsRecyclerView.adapter = mSubscribedAdapter
+    }
+
     private fun getConfiguration() {
         mHomeViewModel.getConfiguration().observe(viewLifecycleOwner, Observer {
             when(it) {
@@ -74,7 +88,7 @@ class HomeFragment : Fragment() {
                     showLoading()
                 }
                 is Success -> {
-                    imageUrlHelper.setImageConfig(it.data)
+                    mImageUrlHelper.setImageConfig(it.data)
                     getGenreList()
                 }
                 is Error -> {
@@ -115,7 +129,6 @@ class HomeFragment : Fragment() {
 
                 is Success -> {
                     showLoading(false)
-
                     mAdapter.updateList(it.data.results)
                 }
             }
@@ -127,6 +140,14 @@ class HomeFragment : Fragment() {
             when(it) {
                 is Success -> {
                     Timber.d("apinto - Subscriptions: ${it.data.size}")
+                    mSubscribedAdapter.updateList(it.data)
+
+                    if (it.data.isNotEmpty()) {
+                        binding.subscriptionGroup.visibility = VISIBLE
+                        if (binding.loadingProgressBar.visibility == VISIBLE) {
+                            binding.loadingProgressBar.visibility = GONE
+                        }
+                    }
                 }
 
                 is Error -> {
@@ -137,22 +158,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun showLoading(show: Boolean = true) {
-        binding.errorMessageTextView.visibility = View.GONE
+        binding.errorMessageTextView.visibility = GONE
 
         if (show) {
-            binding.loadingProgressBar.visibility = View.VISIBLE
-            binding.contentGroup.visibility = View.GONE
+            binding.loadingProgressBar.visibility = VISIBLE
+            binding.contentGroup.visibility = GONE
         } else {
-            binding.loadingProgressBar.visibility = View.GONE
-            binding.contentGroup.visibility = View.VISIBLE
+            binding.loadingProgressBar.visibility = GONE
+            binding.contentGroup.visibility = VISIBLE
         }
     }
 
     private fun showErrorMessage(message: String = requireContext().getString(R.string.generic_error_message)) {
-        binding.contentGroup.visibility = View.GONE
-        binding.loadingProgressBar.visibility = View.GONE
+        binding.contentGroup.visibility = GONE
+        binding.loadingProgressBar.visibility = GONE
 
-        binding.errorMessageTextView.visibility = View.VISIBLE
+        binding.errorMessageTextView.visibility = VISIBLE
         binding.errorMessageTextView.text = message
     }
 

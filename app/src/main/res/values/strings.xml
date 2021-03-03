@@ -2,6 +2,7 @@
     <string name="app_name">Tv Series app</string>
 
     <string name="home_list_title">TODAS</string>
+    <string name="home_subscriptions_title">SUBSCRIPTAS</string>
 
     <string name="generic_error_message">Error al cargar, por favor intente más tarde.</string>
 

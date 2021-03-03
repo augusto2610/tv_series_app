@@ -13,7 +13,8 @@ import com.apinto.tvseriesapp.model.TvSerie
 import com.squareup.picasso.Picasso
 
 
-class TvSeriesListAdapter(private val mContext: Context, private val imageHelper: ImageFactoryHelper): RecyclerView.Adapter<BaseViewHolder<*>>() {
+class TvSeriesListAdapter(private val mContext: Context,
+                          private val mImageHelper: ImageFactoryHelper): RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     interface OnTvSerieClickListener {
         fun onTvSerieClick(serieId: Long)
@@ -65,7 +66,7 @@ class TvSeriesListAdapter(private val mContext: Context, private val imageHelper
         override fun bind(item: TvSerie) = with(binding) {
             serieTitleTextView.text = item.originalName
 
-            val url = "${imageHelper.getDefaultSizeBackdropPath(item.backdropPath)}"
+            val url = "${mImageHelper.getDefaultSizeBackdropPath(item.backdropPath)}"
 
             mGenreList?.find {
                 it.id == item.genreIds.firstOrNull()

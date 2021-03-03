@@ -7,6 +7,11 @@
         <item name="colorSecondary">@color/main_text_color</item>
     </style>
 
+    <!-- splash theme -->
+    <style name="SplashTheme" parent="appTheme">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
     <style name="genreTextViewStyle">
         <item name="android:textSize">@dimen/item_genre_text_size</item>
         <item name="android:background">@drawable/genre_tv_background</item>

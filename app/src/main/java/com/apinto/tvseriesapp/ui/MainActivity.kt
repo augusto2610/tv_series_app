@@ -8,6 +8,7 @@ import com.apinto.tvseriesapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.appTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
