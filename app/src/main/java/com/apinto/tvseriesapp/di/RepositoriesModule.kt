@@ -4,7 +4,7 @@ import com.apinto.tvseriesapp.repositories.*
 import org.koin.dsl.module
 
 val repositoriesModule = module {
-    single<TvSeriesRepository> { TvSeriesRepositoryImpl(get()) }
+    single<TvSeriesRepository> { TvSeriesRepositoryImpl(get(), get()) }
     single<ImageFactoryRepository> { ImageFactoryRepositoryImpl(get()) }
-    single<TvSerieDetailsRepository> { TvSerieDetailsRepositoryImpl(get()) }
+    single<TvSerieDetailsRepository> { TvSerieDetailsRepositoryImpl(get(), get()) }
 }

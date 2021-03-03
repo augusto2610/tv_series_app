@@ -1,6 +1,9 @@
 package com.apinto.tvseriesapp.model
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -18,3 +21,9 @@ data class TvSerie(@SerializedName("backdrop_path") val backdropPath: String,
                    @SerializedName("poster_path") val posterPath: String,
                    @SerializedName("vote_average") val voteAverage: Float,
                    @SerializedName("vote_count") val voteCount: Long): Parcelable
+
+
+@Entity(tableName = "serieSubscription")
+data class TvSerieEntity(@PrimaryKey val serieId: Long,
+                         @ColumnInfo(name = "serie_name") val name: String,
+                         @ColumnInfo(name = "poster_path") val posterPath: String)

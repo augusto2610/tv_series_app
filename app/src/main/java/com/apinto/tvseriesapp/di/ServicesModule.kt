@@ -1,6 +1,7 @@
 package com.apinto.tvseriesapp.di
 
 import com.apinto.tvseriesapp.BuildConfig.BASE_URL
+import com.apinto.tvseriesapp.services.SubscriptionService
 import com.apinto.tvseriesapp.services.TvSeriesService
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
@@ -13,6 +14,8 @@ val servicesModule = module {
 
     factory { provideOkHttpClient() }
     single { provideRetrofit(get()).create(TvSeriesService::class.java) }
+
+    single { SubscriptionService(get()) }
 
 }
 

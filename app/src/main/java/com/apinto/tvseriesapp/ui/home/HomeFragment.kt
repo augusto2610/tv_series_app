@@ -12,7 +12,6 @@ import com.apinto.tvseriesapp.R
 import com.apinto.tvseriesapp.core.ImageFactoryHelper
 import com.apinto.tvseriesapp.core.Resource.*
 import com.apinto.tvseriesapp.databinding.FragmentHomeBinding
-import com.apinto.tvseriesapp.ui.home.HomeFragmentDirections
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
@@ -94,6 +93,7 @@ class HomeFragment : Fragment() {
                     Timber.d("genres: ${it.data.genres}")
                     mAdapter.setGenreList(it.data.genres)
                     getTvSeriesList()
+                    getSubscriptions()
                 }
 
                 is Error -> {
@@ -117,6 +117,20 @@ class HomeFragment : Fragment() {
                     showLoading(false)
 
                     mAdapter.updateList(it.data.results)
+                }
+            }
+        })
+    }
+
+    private fun getSubscriptions() {
+        mHomeViewModel.getSubscriptions().observe(viewLifecycleOwner, Observer {
+            when(it) {
+                is Success -> {
+                    Timber.d("apinto - Subscriptions: ${it.data.size}")
+                }
+
+                is Error -> {
+                    Timber.d("apinto - error: ${it.exception.localizedMessage}")
                 }
             }
         })
